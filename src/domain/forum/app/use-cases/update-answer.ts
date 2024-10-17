@@ -1,4 +1,7 @@
+import { Either, left, right } from "@/core/__error/either";
 import { AnswerRepository } from "../repositories/answer-repository";
+import { ResourceNotFoundError } from "./__errors/resource-not-found-error";
+import { NotAllowedError } from "./__errors/not-allowed-error";
 
 export interface UpdateAnswerUseCaseRequest {
   content: string;
@@ -6,7 +9,10 @@ export interface UpdateAnswerUseCaseRequest {
   authorId: string;
 }
 
-export interface UpdateAnswerUseCaseResponse {}
+export type UpdateAnswerUseCaseResponse = Either<
+  ResourceNotFoundError | NotAllowedError,
+  {}
+>;
 
 export class UpdateAnswerUseCase {
   constructor(private readonly answerRepository: AnswerRepository) {}
@@ -14,19 +20,21 @@ export class UpdateAnswerUseCase {
     content,
     answerId,
     authorId,
-  }: UpdateAnswerUseCaseRequest): Promise<void> {
+  }: UpdateAnswerUseCaseRequest): Promise<UpdateAnswerUseCaseResponse> {
     const answer = await this.answerRepository.findById(answerId);
 
     if (!answer) {
-      throw new Error("Question not found error");
+      return left(new ResourceNotFoundError());
     }
 
     if (authorId !== answer.authorId) {
-      throw new Error("Not allowed");
+      return left(new NotAllowedError());
     }
 
     answer.updateContent(content);
 
     await this.answerRepository.update(answer);
+
+    return right({});
   }
 }

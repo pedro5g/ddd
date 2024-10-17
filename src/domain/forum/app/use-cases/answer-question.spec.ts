@@ -16,7 +16,8 @@ test("create an answer", async () => {
     content: "this is a test message",
   };
 
-  const answer = await answerQuestion.execute(contentTest);
+  const result = await answerQuestion.execute(contentTest);
 
-  expect(answer.content).toEqual(contentTest.content);
+  expect(result.isRight()).toBeTruthy();
+  expect(result.value?.answer.content).toEqual(contentTest.content);
 });

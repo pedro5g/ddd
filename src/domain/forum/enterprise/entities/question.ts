@@ -16,14 +16,14 @@ export interface QuestionProps {
 
 export class Question extends Entity<QuestionProps> {
   public static create(
-    props: Optional<QuestionProps, "createdAt" | "slug">,
+    { createdAt, ...props }: Optional<QuestionProps, "createdAt" | "slug">,
     id?: UniqueEntityId
   ) {
     return new Question(
       {
         ...props,
         slug: props.slug ?? Slug.toSlug(props.title),
-        createdAt: new Date(),
+        createdAt: createdAt ?? new Date(),
       },
       id
     );
@@ -48,7 +48,7 @@ export class Question extends Entity<QuestionProps> {
     this.touch();
   }
 
-  set beastAnswerId(id: UniqueEntityId) {
+  public setBeastAnswerId(id: UniqueEntityId) {
     this.props.bestAnswerId = id;
   }
 
