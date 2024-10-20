@@ -2,13 +2,17 @@ import { InMemoryQuestionsRepository } from "tests/repository/in-memory-question
 import { GetQuestionBySlug } from "./get-question-by-slug";
 import { makeQuestion } from "tests/factories/make-question";
 import { ResourceNotFoundError } from "./__errors/resource-not-found-error";
+import { InMemoryQuestionAttachmentsRepository } from "tests/repository/in-memory-question-attachments-repository";
+
+let fkQuestionAttachmentRepo: InMemoryQuestionAttachmentsRepository;
 
 let fakeRepo: InMemoryQuestionsRepository;
 let sut: GetQuestionBySlug;
 
 describe("Get Question By Slug Use Case", () => {
   beforeEach(() => {
-    fakeRepo = new InMemoryQuestionsRepository();
+    fkQuestionAttachmentRepo = new InMemoryQuestionAttachmentsRepository();
+    fakeRepo = new InMemoryQuestionsRepository(fkQuestionAttachmentRepo);
     sut = new GetQuestionBySlug(fakeRepo);
   });
 

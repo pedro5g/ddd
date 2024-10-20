@@ -4,6 +4,9 @@ import { CommentOnAnswerUseCase } from "./comment-on-answer";
 import { makeAnswer } from "tests/factories/make-answer";
 import { InMemoryAnswersRepository } from "tests/repository/in-memory-answers-repository";
 import { AnswerComment } from "../../enterprise/entities/answer-comments";
+import { InMemoryAnswerAttachmentsRepository } from "tests/repository/in-memory-answer-attachment-repository";
+
+let fkAnswerAttachmentRepo: InMemoryAnswerAttachmentsRepository;
 
 let fakeAnswerRepo: AnswerRepository;
 let fakeAnswerCommentsRepo: InMemoryAnswersCommentsRepository;
@@ -11,7 +14,8 @@ let sut: CommentOnAnswerUseCase;
 
 describe("Tests Comment On Answer Use Case", () => {
   beforeEach(() => {
-    fakeAnswerRepo = new InMemoryAnswersRepository();
+    fkAnswerAttachmentRepo = new InMemoryAnswerAttachmentsRepository();
+    fakeAnswerRepo = new InMemoryAnswersRepository(fkAnswerAttachmentRepo);
     fakeAnswerCommentsRepo = new InMemoryAnswersCommentsRepository();
 
     sut = new CommentOnAnswerUseCase(fakeAnswerRepo, fakeAnswerCommentsRepo);

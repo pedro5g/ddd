@@ -3,6 +3,9 @@ import { InMemoryQuestionsRepository } from "tests/repository/in-memory-question
 import { CommentOnQuestionUseCase } from "./comment-on-question";
 import { makeQuestion } from "tests/factories/make-question";
 import { QuestionComment } from "../../enterprise/entities/question-comments";
+import { InMemoryQuestionAttachmentsRepository } from "tests/repository/in-memory-question-attachments-repository";
+
+let fkQuestionAttachmentRepo: InMemoryQuestionAttachmentsRepository;
 
 let fakeQuestionRepo: InMemoryQuestionsRepository;
 let fakeQuestionCommentsRepo: InMemoryQuestionCommentsRepository;
@@ -10,7 +13,10 @@ let sut: CommentOnQuestionUseCase;
 
 describe("Tests Comment On Question Use Case", () => {
   beforeEach(() => {
-    fakeQuestionRepo = new InMemoryQuestionsRepository();
+    fkQuestionAttachmentRepo = new InMemoryQuestionAttachmentsRepository();
+    fakeQuestionRepo = new InMemoryQuestionsRepository(
+      fkQuestionAttachmentRepo
+    );
     fakeQuestionCommentsRepo = new InMemoryQuestionCommentsRepository();
 
     sut = new CommentOnQuestionUseCase(

@@ -1,4 +1,4 @@
-import { Optional } from "@/core/@types/optional";
+import { Optional } from "@/core/types/optional";
 import { Entity } from "@/core/domain/entities/entity";
 import { UniqueEntityId } from "@/core/domain/value-objects/unique-entity-id";
 

@@ -1,4 +1,4 @@
-import { Optional } from "@/core/@types/optional";
+import { Optional } from "@/core/types/optional";
 import { UniqueEntityId } from "@/core/domain/value-objects/unique-entity-id";
 import { Comment } from "./comment";
 

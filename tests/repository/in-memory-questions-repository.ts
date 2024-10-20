@@ -1,9 +1,14 @@
 import { PaginationParams } from "@/core/domain/repository/pagination-params";
+import { QuestionAttachmentsRepository } from "@/domain/forum/app/repositories/question-attachments-repository";
 import { QuestionRepository } from "@/domain/forum/app/repositories/questions-repository";
 import { Question } from "@/domain/forum/enterprise/entities/question";
 
 export class InMemoryQuestionsRepository implements QuestionRepository {
   private _itens: Question[] = [];
+
+  constructor(
+    private readonly questionAttachmentRepository: QuestionAttachmentsRepository
+  ) {}
 
   async create(question: Question): Promise<void> {
     this._itens.push(question);
@@ -18,6 +23,10 @@ export class InMemoryQuestionsRepository implements QuestionRepository {
     const qstIndex = this._itens.findIndex((i) => i.id !== question.id);
 
     this._itens.splice(qstIndex, 1);
+
+    await this.questionAttachmentRepository.deleteManyByQuestionId(
+      question.id.toString()
+    );
   }
   async getManyRecent({ page }: PaginationParams): Promise<Question[]> {
     const LIMIT: number = 20;

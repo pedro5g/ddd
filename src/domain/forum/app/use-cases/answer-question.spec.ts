@@ -1,23 +1,48 @@
 import { AnswerQuestionUseCase } from "./answer-question";
-import { AnswerRepository } from "../repositories/answer-repository";
 import { InMemoryAnswersRepository } from "tests/repository/in-memory-answers-repository";
+import { InMemoryAnswerAttachmentsRepository } from "tests/repository/in-memory-answer-attachment-repository";
 
-let fakeAnswersRepository: AnswerRepository;
+let fakeAnswersRepository: InMemoryAnswersRepository;
+let fakeAnswersAttachmentsRepository: InMemoryAnswerAttachmentsRepository;
+let sut: AnswerQuestionUseCase;
 
-beforeEach(() => {
-  fakeAnswersRepository = new InMemoryAnswersRepository();
-});
-test("create an answer", async () => {
-  const answerQuestion = new AnswerQuestionUseCase(fakeAnswersRepository);
+describe("Answer Question", () => {
+  beforeEach(() => {
+    fakeAnswersAttachmentsRepository =
+      new InMemoryAnswerAttachmentsRepository();
+    fakeAnswersRepository = new InMemoryAnswersRepository(
+      fakeAnswersAttachmentsRepository
+    );
+    sut = new AnswerQuestionUseCase(fakeAnswersRepository);
+  });
+  it("create an answer", async () => {
+    const contentTest = {
+      questionId: "1232",
+      instructorId: "343",
+      content: "this is a test message",
+      attachmentsIds: [],
+    };
 
-  const contentTest = {
-    questionId: "1232",
-    instructorId: "343",
-    content: "this is a test message",
-  };
+    const result = await sut.execute(contentTest);
 
-  const result = await answerQuestion.execute(contentTest);
+    expect(result.isRight()).toBeTruthy();
+    expect(result.value?.answer.content).toEqual(contentTest.content);
+  });
 
-  expect(result.isRight()).toBeTruthy();
-  expect(result.value?.answer.content).toEqual(contentTest.content);
+  it("should be able to create an answer with attachments", async () => {
+    const contentTest = {
+      questionId: "1232",
+      instructorId: "343",
+      content: "this is a test message",
+      attachmentsIds: ["1", "2"],
+    };
+
+    const result = await sut.execute(contentTest);
+
+    expect(result.isRight()).toBeTruthy();
+    expect(result.value?.answer.content).toEqual(contentTest.content);
+    expect(fakeAnswersRepository.itens[0].attachment.getItems()).toHaveLength(
+      2
+    );
+  });
 });
