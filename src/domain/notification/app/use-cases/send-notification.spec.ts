@@ -1,13 +1,13 @@
-import { InMemoryNotificationRepository } from "tests/repository/in-memory-notification-repository";
+import { InMemoryNotificationsRepository } from "tests/repository/in-memory-notification-repository";
 import { SendNotificationUseCase } from "./send-notification";
 import { UniqueEntityId } from "@/core/domain/value-objects/unique-entity-id";
 
-let fakeNotificationRepository: InMemoryNotificationRepository;
+let fakeNotificationsRepository: InMemoryNotificationsRepository;
 let sut: SendNotificationUseCase;
 describe("Send Notification Use Case Test", () => {
   beforeEach(() => {
-    fakeNotificationRepository = new InMemoryNotificationRepository();
-    sut = new SendNotificationUseCase(fakeNotificationRepository);
+    fakeNotificationsRepository = new InMemoryNotificationsRepository();
+    sut = new SendNotificationUseCase(fakeNotificationsRepository);
   });
 
   it("should be able to create a new Notification", async () => {
@@ -21,7 +21,7 @@ describe("Send Notification Use Case Test", () => {
     expect(result.isRight()).toBeTruthy();
     expect(result.isLeft()).toBeFalsy();
 
-    expect(fakeNotificationRepository.items[0].recipientId.toString()).toEqual(
+    expect(fakeNotificationsRepository.items[0].recipientId.toString()).toEqual(
       testId.toString()
     );
   });

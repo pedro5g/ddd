@@ -3,8 +3,8 @@ import { InMemoryQuestionCommentsRepository } from "tests/repository/in-memory-q
 import { DeleteQuestionCommentUseCase } from "./delete-question-comment";
 import { UniqueEntityId } from "@/core/domain/value-objects/unique-entity-id";
 import { makeQuestionComment } from "tests/factories/make-comment";
-import { ResourceNotFoundError } from "./__errors/resource-not-found-error";
-import { NotAllowedError } from "./__errors/not-allowed-error";
+import { ResourceNotFoundError } from "../../../../core/__error/__errors/resource-not-found-error";
+import { NotAllowedError } from "../../../../core/__error/__errors/not-allowed-error";
 import { Question } from "../../enterprise/entities/question";
 
 let fkRepo: InMemoryQuestionCommentsRepository;

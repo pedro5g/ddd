@@ -1,7 +1,7 @@
 import { PaginationParams } from "@/core/domain/repository/pagination-params";
 import { Answer } from "../../enterprise/entities/answer";
 
-export interface AnswerRepository {
+export interface AnswersRepository {
   create(answer: Answer): Promise<void>;
   delete(answer: Answer): Promise<void>;
   update(answer: Answer): Promise<void>;

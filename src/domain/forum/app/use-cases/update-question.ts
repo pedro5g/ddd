@@ -1,7 +1,7 @@
 import { Either, left, right } from "@/core/__error/either";
-import { QuestionRepository } from "../repositories/questions-repository";
-import { NotAllowedError } from "./__errors/not-allowed-error";
-import { ResourceNotFoundError } from "./__errors/resource-not-found-error";
+import { QuestionsRepository } from "../repositories/questions-repository";
+import { NotAllowedError } from "../../../../core/__error/__errors/not-allowed-error";
+import { ResourceNotFoundError } from "../../../../core/__error/__errors/resource-not-found-error";
 import { QuestionAttachmentsRepository } from "../repositories/question-attachments-repository";
 import { QuestionAttachmentList } from "../../enterprise/entities/question-attachment-list";
 import { QuestionAttachment } from "../../enterprise/entities/question-attachment";
@@ -22,7 +22,7 @@ export type UpdateQuestionUseCaseResponse = Either<
 
 export class UpdateQuestionUseCase {
   constructor(
-    private readonly questionRepository: QuestionRepository,
+    private readonly questionsRepository: QuestionsRepository,
     private readonly questionAttachmentsRepository: QuestionAttachmentsRepository
   ) {}
   async execute({
@@ -32,7 +32,7 @@ export class UpdateQuestionUseCase {
     questionId,
     authorId,
   }: UpdateQuestionUseCaseRequest): Promise<UpdateQuestionUseCaseResponse> {
-    const question = await this.questionRepository.findById(questionId);
+    const question = await this.questionsRepository.findById(questionId);
 
     if (!question) {
       return left(new ResourceNotFoundError());
@@ -62,7 +62,7 @@ export class UpdateQuestionUseCase {
     question.updateTitle(title);
     question.setAttachments(questionAttachmentList);
 
-    await this.questionRepository.update(question);
+    await this.questionsRepository.update(question);
     return right({});
   }
 }

@@ -1,7 +1,8 @@
 import { Optional } from "@/core/types/optional";
-import { Entity } from "src/core/domain/entities/entity";
 import { UniqueEntityId } from "src/core/domain/value-objects/unique-entity-id";
 import { AnswerAttachmentList } from "./answer-attachment-list";
+import { AggregateRoot } from "@/core/domain/entities/aggregate-root";
+import { AnswerCreatedEvent } from "../events/answer-created-event";
 
 export interface AnswerProps {
   authorId: UniqueEntityId;
@@ -12,12 +13,12 @@ export interface AnswerProps {
   updatedAt?: Date;
 }
 
-export class Answer extends Entity<AnswerProps> {
+export class Answer extends AggregateRoot<AnswerProps> {
   public static create(
     props: Optional<AnswerProps, "createdAt" | "attachment">,
     id?: UniqueEntityId
   ) {
-    return new Answer(
+    const _answer = new Answer(
       {
         ...props,
         attachment: props.attachment ?? new AnswerAttachmentList(),
@@ -25,6 +26,15 @@ export class Answer extends Entity<AnswerProps> {
       },
       id
     );
+
+    // check if it is not a reference
+    const isNewAnswer = Boolean(!id);
+
+    if (isNewAnswer) {
+      _answer.addDomainEvent(new AnswerCreatedEvent(_answer));
+    }
+
+    return _answer;
   }
 
   private touch() {

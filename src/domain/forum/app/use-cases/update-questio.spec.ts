@@ -1,7 +1,7 @@
 import { makeQuestion } from "tests/factories/make-question";
 import { InMemoryQuestionsRepository } from "tests/repository/in-memory-questions-repository";
 import { UpdateQuestionUseCase } from "./update-question";
-import { NotAllowedError } from "./__errors/not-allowed-error";
+import { NotAllowedError } from "../../../../core/__error/__errors/not-allowed-error";
 import { InMemoryQuestionAttachmentsRepository } from "tests/repository/in-memory-question-attachments-repository";
 import { Question } from "../../enterprise/entities/question";
 import { makeQuestionAttachment } from "tests/factories/make-question-attachment";

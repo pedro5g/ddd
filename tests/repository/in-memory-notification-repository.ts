@@ -1,7 +1,9 @@
-import { NotificationRepository } from "@/domain/notification/app/repositories/notification-repository";
+import { NotificationsRepository } from "@/domain/notification/app/repositories/notification-repository";
 import { Notification } from "@/domain/notification/enterprise/entities/notification";
 
-export class InMemoryNotificationRepository implements NotificationRepository {
+export class InMemoryNotificationsRepository
+  implements NotificationsRepository
+{
   private _items: Notification[] = [];
 
   get items(): Notification[] {

@@ -1,7 +1,7 @@
 import { InMemoryQuestionsRepository } from "tests/repository/in-memory-questions-repository";
 import { GetQuestionBySlug } from "./get-question-by-slug";
 import { makeQuestion } from "tests/factories/make-question";
-import { ResourceNotFoundError } from "./__errors/resource-not-found-error";
+import { ResourceNotFoundError } from "../../../../core/__error/__errors/resource-not-found-error";
 import { InMemoryQuestionAttachmentsRepository } from "tests/repository/in-memory-question-attachments-repository";
 
 let fkQuestionAttachmentRepo: InMemoryQuestionAttachmentsRepository;

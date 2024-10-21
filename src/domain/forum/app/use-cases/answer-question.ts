@@ -1,6 +1,6 @@
 import { UniqueEntityId } from "src/core/domain/value-objects/unique-entity-id";
 import { Answer } from "../../enterprise/entities/answer";
-import { AnswerRepository } from "../repositories/answer-repository";
+import { AnswersRepository } from "../repositories/answer-repository";
 import { Either, right } from "@/core/__error/either";
 import { AnswerAttachment } from "../../enterprise/entities/answer-attachment";
 import { AnswerAttachmentList } from "../../enterprise/entities/answer-attachment-list";
@@ -15,7 +15,7 @@ interface AnswerQuestionUseCaseRequest {
 type AnswerQuestionUseCaseResponse = Either<null, { answer: Answer }>;
 
 export class AnswerQuestionUseCase {
-  constructor(private readonly answersRepository: AnswerRepository) {}
+  constructor(private readonly answersRepository: AnswersRepository) {}
   async execute({
     instructorId,
     questionId,

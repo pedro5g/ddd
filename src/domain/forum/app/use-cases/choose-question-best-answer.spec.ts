@@ -4,31 +4,31 @@ import { InMemoryQuestionsRepository } from "tests/repository/in-memory-question
 import { ChooseQuestionBestAnswerUseCase } from "./choose-question-best-answer";
 import { Question } from "../../enterprise/entities/question";
 import { makeQuestion } from "tests/factories/make-question";
-import { NotAllowedError } from "./__errors/not-allowed-error";
+import { NotAllowedError } from "../../../../core/__error/__errors/not-allowed-error";
 import { InMemoryAnswerAttachmentsRepository } from "tests/repository/in-memory-answer-attachment-repository";
 import { InMemoryQuestionAttachmentsRepository } from "tests/repository/in-memory-question-attachments-repository";
 
 let fkAnswerAttachmentRepo: InMemoryAnswerAttachmentsRepository;
 let fkQuestionAttachmentRepo: InMemoryQuestionAttachmentsRepository;
-let fkAnswerRepository: InMemoryAnswersRepository;
-let fkQuestionRepository: InMemoryQuestionsRepository;
+let fkAnswersRepository: InMemoryAnswersRepository;
+let fkQuestionsRepository: InMemoryQuestionsRepository;
 let question: Question;
 let sut: ChooseQuestionBestAnswerUseCase;
 describe("Choose Question Best Answer Use Case", () => {
   beforeEach(async () => {
     fkAnswerAttachmentRepo = new InMemoryAnswerAttachmentsRepository();
     fkQuestionAttachmentRepo = new InMemoryQuestionAttachmentsRepository();
-    fkAnswerRepository = new InMemoryAnswersRepository(fkAnswerAttachmentRepo);
-    fkQuestionRepository = new InMemoryQuestionsRepository(
+    fkAnswersRepository = new InMemoryAnswersRepository(fkAnswerAttachmentRepo);
+    fkQuestionsRepository = new InMemoryQuestionsRepository(
       fkQuestionAttachmentRepo
     );
     sut = new ChooseQuestionBestAnswerUseCase(
-      fkAnswerRepository,
-      fkQuestionRepository
+      fkAnswersRepository,
+      fkQuestionsRepository
     );
 
     question = makeQuestion();
-    await fkQuestionRepository.create(question);
+    await fkQuestionsRepository.create(question);
   });
 
   it("should be able to set a best answer in a question", async () => {
@@ -36,7 +36,7 @@ describe("Choose Question Best Answer Use Case", () => {
       questionId: question.id,
     });
 
-    await fkAnswerRepository.create(newAnswer);
+    await fkAnswersRepository.create(newAnswer);
 
     expect(question.bestAnswerId).toBeUndefined();
     const result = await sut.execute({
@@ -44,11 +44,11 @@ describe("Choose Question Best Answer Use Case", () => {
       authorId: question.authorId,
     });
 
-    const item = fkQuestionRepository.items[0];
+    const item = fkQuestionsRepository.items[0];
 
     expect(result.isRight()).toBeTruthy();
     expect(item.bestAnswerId).not.toBeUndefined();
-    expect(item.bestAnswerId).toEqual(newAnswer.id.toString());
+    expect(item.bestAnswerId).toEqual(newAnswer.id);
   });
 
   it("should be not able to set a best answer in a question from another user", async () => {
@@ -56,7 +56,7 @@ describe("Choose Question Best Answer Use Case", () => {
       questionId: question.id,
     });
 
-    await fkAnswerRepository.create(newAnswer);
+    await fkAnswersRepository.create(newAnswer);
 
     const result = await sut.execute({
       answerId: newAnswer.id.toString(),

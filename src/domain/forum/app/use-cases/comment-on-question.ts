@@ -1,9 +1,9 @@
-import { QuestionRepository } from "../repositories/questions-repository";
+import { QuestionsRepository } from "../repositories/questions-repository";
 import { QuestionComment } from "../../enterprise/entities/question-comments";
-import { QuestionCommentRepository } from "../repositories/question-comments-repository";
+import { QuestionCommentsRepository } from "../repositories/question-comments-repository";
 import { UniqueEntityId } from "@/core/domain/value-objects/unique-entity-id";
 import { Either, left, right } from "@/core/__error/either";
-import { ResourceNotFoundError } from "./__errors/resource-not-found-error";
+import { ResourceNotFoundError } from "../../../../core/__error/__errors/resource-not-found-error";
 
 export interface CommentOnQuestionUseCaseRequest {
   authorId: string;
@@ -20,15 +20,15 @@ export type CommentOnQuestionUseCaseResponse = Either<
 
 export class CommentOnQuestionUseCase {
   constructor(
-    private readonly questionRepository: QuestionRepository,
-    private readonly questionCommentsRepository: QuestionCommentRepository
+    private readonly questionsRepository: QuestionsRepository,
+    private readonly questionCommentsRepository: QuestionCommentsRepository
   ) {}
   async execute({
     authorId,
     questionId,
     content,
   }: CommentOnQuestionUseCaseRequest): Promise<CommentOnQuestionUseCaseResponse> {
-    const question = await this.questionRepository.findById(questionId);
+    const question = await this.questionsRepository.findById(questionId);
 
     if (!question) {
       return left(new ResourceNotFoundError());

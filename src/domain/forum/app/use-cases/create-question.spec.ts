@@ -4,15 +4,15 @@ let fkQuestionAttachmentRepo: InMemoryQuestionAttachmentsRepository;
 import { CreateQuestionUseCase } from "./create-question";
 import { InMemoryQuestionAttachmentsRepository } from "tests/repository/in-memory-question-attachments-repository";
 
-let fakeQuestionRepository: InMemoryQuestionsRepository;
+let fakeQuestionsRepository: InMemoryQuestionsRepository;
 let sut: CreateQuestionUseCase;
 describe("Create Question Use Case", () => {
   beforeEach(() => {
     fkQuestionAttachmentRepo = new InMemoryQuestionAttachmentsRepository();
-    fakeQuestionRepository = new InMemoryQuestionsRepository(
+    fakeQuestionsRepository = new InMemoryQuestionsRepository(
       fkQuestionAttachmentRepo
     );
-    sut = new CreateQuestionUseCase(fakeQuestionRepository);
+    sut = new CreateQuestionUseCase(fakeQuestionsRepository);
   });
   it("should be able to create a question", async () => {
     const result = await sut.execute({
@@ -26,8 +26,8 @@ describe("Create Question Use Case", () => {
     expect(result.value?.question.content).toEqual("content test");
     expect(result.value?.question.title).toEqual("test");
     expect(result.value?.question.authorId).toEqual("123456");
-    expect(fakeQuestionRepository.items[0].attachments.getItems()).toHaveLength(
-      3
-    );
+    expect(
+      fakeQuestionsRepository.items[0].attachments.getItems()
+    ).toHaveLength(3);
   });
 });

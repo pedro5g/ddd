@@ -1,7 +1,7 @@
 import { makeAnswer } from "tests/factories/make-answer";
 import { InMemoryAnswersRepository } from "tests/repository/in-memory-answers-repository";
 import { UpdateAnswerUseCase } from "./update-answer";
-import { NotAllowedError } from "./__errors/not-allowed-error";
+import { NotAllowedError } from "../../../../core/__error/__errors/not-allowed-error";
 import { InMemoryAnswerAttachmentsRepository } from "tests/repository/in-memory-answer-attachment-repository";
 import { Answer } from "../../enterprise/entities/answer";
 import { makeAnswerAttachment } from "tests/factories/make-answer-attachment";

@@ -4,6 +4,7 @@ import { Optional } from "@/core/types/optional";
 import dayjs from "dayjs";
 import { AggregateRoot } from "@/core/domain/entities/aggregate-root";
 import { QuestionAttachmentList } from "./question-attachment-list";
+import { QuestionBestAnswerChosenEvent } from "../events/question-best-answer-chosen";
 
 export interface QuestionProps {
   title: string;
@@ -24,7 +25,7 @@ export class Question extends AggregateRoot<QuestionProps> {
     }: Optional<QuestionProps, "createdAt" | "slug" | "attachments">,
     id?: UniqueEntityId
   ) {
-    return new Question(
+    const _question = new Question(
       {
         ...props,
         slug: props.slug ?? Slug.toSlug(props.title),
@@ -33,6 +34,14 @@ export class Question extends AggregateRoot<QuestionProps> {
       },
       id
     );
+
+    const isNewQuestion = Boolean(!id);
+    if (isNewQuestion) {
+      //TO DO
+      // _question.addDomainEvent()
+    }
+
+    return _question;
   }
 
   private touch() {
@@ -54,8 +63,17 @@ export class Question extends AggregateRoot<QuestionProps> {
     this.touch();
   }
 
-  public setBeastAnswerId(id: UniqueEntityId) {
+  public setBeastAnswerId(id?: UniqueEntityId) {
+    if (id === undefined) return;
+
+    if (
+      this.props.bestAnswerId === undefined ||
+      !id.equals(this.props.bestAnswerId)
+    ) {
+      this.addDomainEvent(new QuestionBestAnswerChosenEvent(this, id));
+    }
     this.props.bestAnswerId = id;
+    this.touch();
   }
 
   public setAttachments(attachment: QuestionAttachmentList) {
@@ -90,8 +108,8 @@ export class Question extends AggregateRoot<QuestionProps> {
     return this.props.authorId.value;
   }
 
-  get bestAnswerId(): string | undefined {
-    return this.props.bestAnswerId?.value;
+  get bestAnswerId(): UniqueEntityId | undefined {
+    return this.props.bestAnswerId;
   }
 
   get createdAt(): Date {

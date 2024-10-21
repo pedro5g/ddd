@@ -1,8 +1,8 @@
 import { makeQuestion } from "tests/factories/make-question";
 import { InMemoryQuestionsRepository } from "tests/repository/in-memory-questions-repository";
 import { DeleteQuestionUseCase } from "./delete-question";
-import { ResourceNotFoundError } from "./__errors/resource-not-found-error";
-import { NotAllowedError } from "./__errors/not-allowed-error";
+import { ResourceNotFoundError } from "../../../../core/__error/__errors/resource-not-found-error";
+import { NotAllowedError } from "../../../../core/__error/__errors/not-allowed-error";
 import { InMemoryQuestionAttachmentsRepository } from "tests/repository/in-memory-question-attachments-repository";
 import { Question } from "../../enterprise/entities/question";
 import { makeQuestionAttachment } from "tests/factories/make-question-attachment";

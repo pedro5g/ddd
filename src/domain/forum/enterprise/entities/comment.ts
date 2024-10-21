@@ -1,5 +1,4 @@
-import { Optional } from "@/core/types/optional";
-import { Entity } from "@/core/domain/entities/entity";
+import { AggregateRoot } from "@/core/domain/entities/aggregate-root";
 import { UniqueEntityId } from "@/core/domain/value-objects/unique-entity-id";
 
 export interface CommentProps {
@@ -9,7 +8,7 @@ export interface CommentProps {
   updatedAt?: Date;
 }
 
-export abstract class Comment<T extends CommentProps> extends Entity<T> {
+export abstract class Comment<T extends CommentProps> extends AggregateRoot<T> {
   private touch() {
     this.props.updatedAt = new Date();
   }

@@ -1,7 +1,7 @@
 import { Either, left, right } from "@/core/__error/either";
-import { AnswerRepository } from "../repositories/answer-repository";
-import { ResourceNotFoundError } from "./__errors/resource-not-found-error";
-import { NotAllowedError } from "./__errors/not-allowed-error";
+import { AnswersRepository } from "../repositories/answer-repository";
+import { ResourceNotFoundError } from "../../../../core/__error/__errors/resource-not-found-error";
+import { NotAllowedError } from "../../../../core/__error/__errors/not-allowed-error";
 import { AnswerAttachmentsRepository } from "../repositories/answer-attachment-repository";
 import { AnswerAttachmentList } from "../../enterprise/entities/answer-attachment-list";
 import { AnswerAttachment } from "../../enterprise/entities/answer-attachment";
@@ -21,7 +21,7 @@ export type UpdateAnswerUseCaseResponse = Either<
 
 export class UpdateAnswerUseCase {
   constructor(
-    private readonly answerRepository: AnswerRepository,
+    private readonly answersRepository: AnswersRepository,
     private readonly answerAttachmentsRepository: AnswerAttachmentsRepository
   ) {}
   async execute({
@@ -30,7 +30,7 @@ export class UpdateAnswerUseCase {
     answerId,
     authorId,
   }: UpdateAnswerUseCaseRequest): Promise<UpdateAnswerUseCaseResponse> {
-    const answer = await this.answerRepository.findById(answerId);
+    const answer = await this.answersRepository.findById(answerId);
 
     if (!answer) {
       return left(new ResourceNotFoundError());
@@ -55,7 +55,7 @@ export class UpdateAnswerUseCase {
     answer.setAttachment(answerAttachmentsList);
     answer.updateContent(content);
 
-    await this.answerRepository.update(answer);
+    await this.answersRepository.update(answer);
 
     return right({});
   }

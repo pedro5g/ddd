@@ -1,7 +1,7 @@
 import { PaginationParams } from "@/core/domain/repository/pagination-params";
 import { QuestionComment } from "../../enterprise/entities/question-comments";
 
-export interface QuestionCommentRepository {
+export interface QuestionCommentsRepository {
   create(comment: QuestionComment): Promise<void>;
   update(comment: QuestionComment): Promise<void>;
   delete(comment: QuestionComment): Promise<void>;

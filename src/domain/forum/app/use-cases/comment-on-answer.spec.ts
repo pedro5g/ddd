@@ -1,5 +1,5 @@
 import { InMemoryAnswersCommentsRepository } from "tests/repository/in-memory-answer-comments-repository";
-import { AnswerRepository } from "../repositories/answer-repository";
+import { AnswersRepository } from "../repositories/answer-repository";
 import { CommentOnAnswerUseCase } from "./comment-on-answer";
 import { makeAnswer } from "tests/factories/make-answer";
 import { InMemoryAnswersRepository } from "tests/repository/in-memory-answers-repository";
@@ -8,7 +8,7 @@ import { InMemoryAnswerAttachmentsRepository } from "tests/repository/in-memory-
 
 let fkAnswerAttachmentRepo: InMemoryAnswerAttachmentsRepository;
 
-let fakeAnswerRepo: AnswerRepository;
+let fakeAnswerRepo: AnswersRepository;
 let fakeAnswerCommentsRepo: InMemoryAnswersCommentsRepository;
 let sut: CommentOnAnswerUseCase;
 

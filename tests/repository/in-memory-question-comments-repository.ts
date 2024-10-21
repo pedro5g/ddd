@@ -1,14 +1,16 @@
 import { PaginationParams } from "@/core/domain/repository/pagination-params";
-import { QuestionCommentRepository } from "@/domain/forum/app/repositories/question-comments-repository";
+import { DomainEvents } from "@/core/events/domain-events";
+import { QuestionCommentsRepository } from "@/domain/forum/app/repositories/question-comments-repository";
 import { QuestionComment } from "@/domain/forum/enterprise/entities/question-comments";
 
 export class InMemoryQuestionCommentsRepository
-  implements QuestionCommentRepository
+  implements QuestionCommentsRepository
 {
   private _itens: QuestionComment[] = [];
 
   async create(comment: QuestionComment): Promise<void> {
     this._itens.push(comment);
+    DomainEvents.dispatchEventsForAggregate(comment.id);
   }
 
   async delete(comment: QuestionComment): Promise<void> {

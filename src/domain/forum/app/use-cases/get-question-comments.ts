@@ -1,6 +1,6 @@
 import { Either, right } from "@/core/__error/either";
 import { QuestionComment } from "../../enterprise/entities/question-comments";
-import { QuestionCommentRepository } from "../repositories/question-comments-repository";
+import { QuestionCommentsRepository } from "../repositories/question-comments-repository";
 
 export interface GetQuestionCommentsRequest {
   page: number;
@@ -16,7 +16,7 @@ export type GetQuestionCommentsResponse = Either<
 
 export class GetQuestionCommentsUseCase {
   constructor(
-    private readonly questionCommentsRepository: QuestionCommentRepository
+    private readonly questionCommentsRepository: QuestionCommentsRepository
   ) {}
   async execute({
     page,

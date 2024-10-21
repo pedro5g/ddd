@@ -4,8 +4,8 @@ import { DeleteAnswerCommentUseCase } from "./delete-answer-comment";
 import { makeAnswer } from "tests/factories/make-answer";
 import { makeAnswerComment } from "tests/factories/make-comment";
 import { Answer } from "../../enterprise/entities/answer";
-import { ResourceNotFoundError } from "./__errors/resource-not-found-error";
-import { NotAllowedError } from "./__errors/not-allowed-error";
+import { ResourceNotFoundError } from "../../../../core/__error/__errors/resource-not-found-error";
+import { NotAllowedError } from "../../../../core/__error/__errors/not-allowed-error";
 
 let fkRepo: InMemoryAnswersCommentsRepository;
 let sut: DeleteAnswerCommentUseCase;
